@@ -26,6 +26,13 @@ reader.readAsText(file);
 
 function drawTable(data) {
 
+alert("JSON読込成功");
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(50, 50, 200, 100);
+  
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 const leftWidth = 120;
