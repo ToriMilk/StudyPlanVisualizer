@@ -69,8 +69,8 @@ ctx.clearRect(
 const W = canvas.width;
 const H = canvas.height;
 
-const leftCol = 120;
-const rightCol = 120;
+const leftCol = 70;
+const rightCol = 70;
 
 const headerHeight = 60;
 
