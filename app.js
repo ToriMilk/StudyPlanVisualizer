@@ -129,6 +129,13 @@ ctx.moveTo(W-rightCol,0);
 ctx.lineTo(W-rightCol,H);
 ctx.stroke();
 
+// S列右
+
+ctx.beginPath();
+ctx.moveTo(W - 1, 0);
+ctx.lineTo(W - 1, H);
+ctx.stroke();
+
 // 時間線
 
 for(
