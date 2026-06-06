@@ -317,7 +317,7 @@ data.week.forEach((day,index)=>{
         // 本体
 
         ctx.strokeStyle = color;
-        ctx.lineWidth = 8;
+        ctx.lineWidth = 5;
         ctx.lineCap = "round";
 
         ctx.beginPath();
