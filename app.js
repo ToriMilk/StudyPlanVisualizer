@@ -20,8 +20,20 @@ reader.onload = function(e){
 
     const data = JSON.parse(e.target.result);
 
+    const errors =
+        validateData(data);
+    
+    if(errors.length){
+    
+        alert(
+            errors.join("\n\n")
+        );
+    
+        return;
+    }
+    
     drawTable(data);
-
+    
 };
 
 reader.readAsText(file);
@@ -81,6 +93,137 @@ function shouldShowTimeLabel(timeStr){
         Number(timeStr.split(":")[1]);
 
     return !(minutes === 0 || minutes === 30);
+}
+
+//JSON欠損チェック
+
+function validateData(data){
+
+    const errors = [];
+
+    // 7日チェック
+
+    if(
+        !data.week ||
+        data.week.length !== 7
+    ){
+        errors.push(
+            "week は7日分必要です"
+        );
+    }
+
+    const startMin =
+        timeToMinutes(
+            data.timeline.start
+        );
+
+    const endMin =
+        timeToMinutes(
+            data.timeline.end
+        );
+
+    data.week.forEach(day=>{
+
+        const plans =
+            [...day.plans];
+
+        // 各計画
+
+        plans.forEach(plan=>{
+
+            const s =
+                timeToMinutes(
+                    plan.start
+                );
+
+            const e =
+                timeToMinutes(
+                    plan.end
+                );
+
+            // 終了<=開始
+
+            if(e <= s){
+
+                errors.push(
+                    `${day.date} ${plan.subject}
+終了時刻が開始時刻以前`
+                );
+            }
+
+            // 時間軸外
+
+            if(
+                s < startMin ||
+                e > endMin
+            ){
+
+                errors.push(
+                    `${day.date} ${plan.subject}
+時間軸外`
+                );
+            }
+
+            // 科目
+
+            if(
+                !SUBJECT_COLORS[
+                    plan.subject
+                ]
+            ){
+
+                errors.push(
+                    `${day.date}
+不明な科目:
+${plan.subject}`
+                );
+            }
+
+        });
+
+        // 重複チェック
+
+        plans.sort((a,b)=>
+            timeToMinutes(a.start)
+            -
+            timeToMinutes(b.start)
+        );
+
+        for(
+            let i=0;
+            i<plans.length-1;
+            i++
+        ){
+
+            const currentEnd =
+                timeToMinutes(
+                    plans[i].end
+                );
+
+            const nextStart =
+                timeToMinutes(
+                    plans[i+1].start
+                );
+
+            if(
+                currentEnd >
+                nextStart
+            ){
+
+                errors.push(
+                    `${day.date}
+時間重複:
+${plans[i].subject}
+と
+${plans[i+1].subject}`
+                );
+            }
+
+        }
+
+    });
+
+    return errors;
 }
 
 function drawTable(data){
@@ -362,7 +505,7 @@ data.week.forEach((day,index)=>{
                 plan.start.split(":")[1];
             
             ctx.fillStyle = "#000";
-            ctx.font = "11px sans-serif";
+            ctx.font = "9px sans-serif";
             
             ctx.textBaseline = "bottom";
             
@@ -381,7 +524,7 @@ data.week.forEach((day,index)=>{
                 plan.end.split(":")[1];
             
             ctx.fillStyle = "#000";
-            ctx.font = "11px sans-serif";
+            ctx.font = "9px sans-serif";
             
             ctx.textBaseline = "top";
             
