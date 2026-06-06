@@ -670,7 +670,7 @@ Object.entries(
     ctx.closePath();
 
     ctx.fillStyle =
-        subjectColors[subject];
+        SUBJECT_COLORS[subject];
 
     ctx.fill();
 
