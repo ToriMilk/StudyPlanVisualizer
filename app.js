@@ -105,80 +105,6 @@ function shouldShowTimeLabel(timeStr){
     return !(minutes === 0 || minutes === 30);
 }
 
-//統計計算
-
-function calculateStats(data){
-
-    console.log("week length =", data.week.length);
-    
-    let totalMinutes = 0;
-
-    const subjectMinutes = {};
-
-    let weekdayMinutes = 0;
-    let weekendMinutes = 0;
-
-    data.week.forEach((day,index)=>{
-
-        let dayTotal = 0;
-
-        day.plans.forEach(plan=>{
-
-            const duration =
-                timeToMinutes(plan.end)
-                -
-                timeToMinutes(plan.start);
-
-            totalMinutes += duration;
-            dayTotal += duration;
-
-            subjectMinutes[plan.subject] =
-                (subjectMinutes[plan.subject] || 0)
-                + duration;
-        });
-
-        console.log(
-            "index=",
-            index,
-            "date=",
-            day.date,
-            "dayTotal=",
-            dayTotal
-        );
-        
-        if(index >= 5){
-
-            console.log("→ weekend");
-            
-            weekendMinutes += dayTotal;
-        
-        }else{
-
-            console.log("→ weekday");
-            
-            weekdayMinutes += dayTotal;
-        }
-
-    });
-
-    console.log(
-        "weekdayMinutes=",
-        weekdayMinutes
-    );
-
-    console.log(
-        "weekendMinutes=",
-        weekendMinutes
-    );
-    
-    return {
-        totalMinutes,
-        subjectMinutes,
-        weekdayMinutes,
-        weekendMinutes
-    };
-}
-
 //JSON欠損チェック
 
 function validateData(data){
@@ -623,8 +549,12 @@ data.week.forEach((day,index)=>{
 
 });
 
+//統計計算
+
 function calculateStats(data){
 
+    console.log("week length =", data.week.length);
+    
     let totalMinutes = 0;
 
     const subjectMinutes = {};
@@ -632,16 +562,16 @@ function calculateStats(data){
     let weekdayMinutes = 0;
     let weekendMinutes = 0;
 
-    data.week.forEach(day=>{
+    data.week.forEach((day,index)=>{
 
         let dayTotal = 0;
 
         day.plans.forEach(plan=>{
 
-            const start = timeToMinutes(plan.start);
-            const end = timeToMinutes(plan.end);
-
-            const duration = end - start;
+            const duration =
+                timeToMinutes(plan.end)
+                -
+                timeToMinutes(plan.start);
 
             totalMinutes += duration;
             dayTotal += duration;
@@ -651,13 +581,40 @@ function calculateStats(data){
                 + duration;
         });
 
-        if(day.dayOfWeek === "土" || day.dayOfWeek === "日"){
+        console.log(
+            "index=",
+            index,
+            "date=",
+            day.date,
+            "dayTotal=",
+            dayTotal
+        );
+        
+        if(index >= 5){
+
+            console.log("→ weekend");
+            
             weekendMinutes += dayTotal;
+        
         }else{
+
+            console.log("→ weekday");
+            
             weekdayMinutes += dayTotal;
         }
+
     });
 
+    console.log(
+        "weekdayMinutes=",
+        weekdayMinutes
+    );
+
+    console.log(
+        "weekendMinutes=",
+        weekendMinutes
+    );
+    
     return {
         totalMinutes,
         subjectMinutes,
