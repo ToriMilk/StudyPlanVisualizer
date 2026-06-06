@@ -364,10 +364,12 @@ data.week.forEach((day,index)=>{
             ctx.fillStyle = "#000";
             ctx.font = "11px sans-serif";
             
+            ctx.textBaseline = "bottom";
+            
             ctx.fillText(
                 startMinute,
-                x1,
-                centerY + 18
+                x1 + 5,
+                centerY - 12
             );
         }
 
@@ -381,10 +383,12 @@ data.week.forEach((day,index)=>{
             ctx.fillStyle = "#000";
             ctx.font = "11px sans-serif";
             
+            ctx.textBaseline = "top";
+            
             ctx.fillText(
                 endMinute,
-                x2,
-                centerY + 18
+                x2 - 5,
+                centerY + 12
             );
         }
 
