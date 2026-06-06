@@ -248,13 +248,17 @@ ctx.clearRect(
 const W = canvas.width;
 const H = canvas.height;
 
+const analysisHeight = 300;
+
 const leftCol = 70;
 const rightCol = 70;
 
 const headerHeight = 60;
 
 const bodyHeight =
-    H - headerHeight;
+    H -
+    headerHeight -
+    analysisHeight;
 
 const rowHeight =
     bodyHeight / 7;
@@ -298,21 +302,30 @@ for(let i=0;i<=7;i++){
 
 ctx.beginPath();
 ctx.moveTo(leftCol,0);
-ctx.lineTo(leftCol,H);
+ctx.lineTo(
+    leftCol,
+    headerHeight + bodyHeight
+);
 ctx.stroke();
 
 // S列左
 
 ctx.beginPath();
 ctx.moveTo(W-rightCol,0);
-ctx.lineTo(W-rightCol,H);
+ctx.lineTo(
+    W-rightCol,
+    headerHeight + bodyHeight
+);
 ctx.stroke();
 
 // S列右
 
 ctx.beginPath();
 ctx.moveTo(W - 1, 0);
-ctx.lineTo(W - 1, H);
+ctx.lineTo(
+    W - 1,
+    headerHeight + bodyHeight
+);
 ctx.stroke();
 
 // 時間線
@@ -343,7 +356,10 @@ for(
 
     ctx.beginPath();
     ctx.moveTo(x,headerHeight);
-    ctx.lineTo(x,H);
+    ctx.lineTo(
+        x,
+        headerHeight + bodyHeight
+    );
     ctx.stroke();
 
     if(m % 60 === 0){
