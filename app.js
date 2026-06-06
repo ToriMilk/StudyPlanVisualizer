@@ -322,24 +322,24 @@ data.week.forEach((day,index)=>{
         ctx.lineCap = "round";
 
         ctx.beginPath();
-        ctx.moveTo(x1 + arrowSize, centerY);
-        ctx.lineTo(x2 - arrowSize, centerY);
+        ctx.moveTo(x1, centerY);
+        ctx.lineTo(x2, centerY);
         ctx.stroke();
 
         // 左矢印
 
         ctx.beginPath();
-        ctx.moveTo(x1 + arrowSize, centerY - arrowSize);
+        ctx.moveTo(x1 + ARROW_SIZE, centerY - ARROW_SIZE);
         ctx.lineTo(x1, centerY);
-        ctx.lineTo(x1 + arrowSize, centerY + arrowSize);
+        ctx.lineTo(x1 + ARROW_SIZE, centerY + ARROW_SIZE);
         ctx.stroke();
 
         // 右矢印
 
         ctx.beginPath();
-        ctx.moveTo(x2 - arrowSize, centerY - arrowSize);
+        ctx.moveTo(x2 - ARROW_SIZE, centerY - ARROW_SIZE);
         ctx.lineTo(x2, centerY);
-        ctx.lineTo(x2 - arrowSize, centerY + arrowSize);
+        ctx.lineTo(x2 - ARROW_SIZE, centerY + ARROW_SIZE);
         ctx.stroke();
 
         // 教科名
