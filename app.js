@@ -57,6 +57,32 @@ return h * 60 + m;
 
 }
 
+const SUBJECT_COLORS = {
+    "国語": "#e53935",
+    "数学": "#1e88e5",
+    "英語": "#8e24aa",
+    "物理": "#43a047",
+    "化学": "#fdd835",
+    "地理": "#fb8c00"
+};
+
+const SUBJECT_LABELS = {
+    "国語": "国",
+    "数学": "数",
+    "英語": "英",
+    "物理": "物",
+    "化学": "化",
+    "地理": "地"
+};
+
+function shouldShowTimeLabel(timeStr){
+
+    const minutes =
+        Number(timeStr.split(":")[1]);
+
+    return !(minutes === 0 || minutes === 30);
+}
+
 function drawTable(data){
 
 ctx.clearRect(
@@ -249,6 +275,113 @@ data.week.forEach(
         W-rightCol/2,
         y+5
     );
+
+});
+
+// =====================
+// 勉強ブロック描画
+// =====================
+
+data.week.forEach((day,index)=>{
+
+    const rowTop =
+        headerHeight +
+        rowHeight * index;
+
+    const centerY =
+        rowTop +
+        rowHeight / 2;
+
+    day.plans.forEach(plan=>{
+
+        const start =
+            timeToMinutes(plan.start);
+
+        const end =
+            timeToMinutes(plan.end);
+
+        const x1 =
+            timelineLeft +
+            ((start - startMin) / totalMin)
+            * timelineWidth;
+
+        const x2 =
+            timelineLeft +
+            ((end - startMin) / totalMin)
+            * timelineWidth;
+
+        const color =
+            SUBJECT_COLORS[plan.subject]
+            || "#888";
+
+        // 本体
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 8;
+        ctx.lineCap = "round";
+
+        ctx.beginPath();
+        ctx.moveTo(x1 + 10, centerY);
+        ctx.lineTo(x2 - 10, centerY);
+        ctx.stroke();
+
+        // 左矢印
+
+        ctx.beginPath();
+        ctx.moveTo(x1 + 12, centerY - 10);
+        ctx.lineTo(x1, centerY);
+        ctx.lineTo(x1 + 12, centerY + 10);
+        ctx.stroke();
+
+        // 右矢印
+
+        ctx.beginPath();
+        ctx.moveTo(x2 - 12, centerY - 10);
+        ctx.lineTo(x2, centerY);
+        ctx.lineTo(x2 - 12, centerY + 10);
+        ctx.stroke();
+
+        // 教科名
+
+        ctx.fillStyle = color;
+        ctx.font = "bold 18px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.fillText(
+            SUBJECT_LABELS[plan.subject] || "?",
+            (x1 + x2) / 2,
+            centerY - 18
+        );
+
+        // 開始時刻
+
+        if(shouldShowTimeLabel(plan.start)){
+
+            ctx.fillStyle = "#000";
+            ctx.font = "12px sans-serif";
+
+            ctx.fillText(
+                plan.start,
+                x1,
+                centerY + 18
+            );
+        }
+
+        // 終了時刻
+
+        if(shouldShowTimeLabel(plan.end)){
+
+            ctx.fillStyle = "#000";
+
+            ctx.fillText(
+                plan.end,
+                x2,
+                centerY + 18
+            );
+        }
+
+    });
 
 });
 
