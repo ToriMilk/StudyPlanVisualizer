@@ -629,6 +629,86 @@ console.log(
 const analysisTop =
     headerHeight + bodyHeight;
 
+//円グラフ
+    
+const pieX = W * 0.12;
+const pieY = analysisTop + 100;
+
+const outerRadius = 80;
+const innerRadius = 45;
+
+let startAngle = -Math.PI / 2;
+
+Object.entries(
+    stats.subjectMinutes
+).forEach(([subject,minutes])=>{
+
+    const ratio =
+        minutes /
+        stats.totalMinutes;
+
+    const endAngle =
+        startAngle +
+        ratio *
+        Math.PI * 2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pieX,
+        pieY
+    );
+
+    ctx.arc(
+        pieX,
+        pieY,
+        outerRadius,
+        startAngle,
+        endAngle
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        subjectColors[subject];
+
+    ctx.fill();
+
+    startAngle = endAngle;
+});
+
+//真ん中くり抜く
+ctx.beginPath();
+
+ctx.arc(
+    pieX,
+    pieY,
+    innerRadius,
+    0,
+    Math.PI * 2
+);
+
+ctx.fillStyle = "#fff";
+
+ctx.fill();
+    
+//真ん中に総勉強時間表示
+ctx.fillStyle = "#000";
+
+ctx.textAlign = "center";
+
+ctx.font =
+    "bold 18px sans-serif";
+
+ctx.fillText(
+    formatMinutes(
+        stats.totalMinutes
+    ),
+    pieX,
+    pieY + 7
+);
+
+/*  ただのテキスト（old）  
 ctx.fillStyle = "#000";
 
 ctx.textAlign = "center";
@@ -650,7 +730,7 @@ ctx.fillText(
     W * 0.20,
     analysisTop + 130
 );
-
+*/
 const weekdayAverage =
     Math.round(
         stats.weekdayMinutes / 5
