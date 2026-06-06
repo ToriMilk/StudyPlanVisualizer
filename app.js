@@ -116,7 +116,7 @@ function calculateStats(data){
     let weekdayMinutes = 0;
     let weekendMinutes = 0;
 
-    data.week.forEach(day=>{
+    data.week.forEach((day,index)=>{
 
         let dayTotal = 0;
 
@@ -135,18 +135,12 @@ function calculateStats(data){
                 + duration;
         });
 
-        const d =
-            new Date(day.date);
-
-        const dayOfWeek =
-            d.getDay();
-
-        if(
-            dayOfWeek === 0 ||
-            dayOfWeek === 6
-        ){
+        if(index >= 5){
+        
             weekendMinutes += dayTotal;
+        
         }else{
+        
             weekdayMinutes += dayTotal;
         }
 
