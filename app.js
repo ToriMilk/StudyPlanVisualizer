@@ -103,7 +103,7 @@ ctx.lineWidth = 1;
 
 // 横線
 
-for(let i=1;i<=7;i++){
+for(let i=0;i<=7;i++){
 
     const y =
         headerHeight +
@@ -132,8 +132,8 @@ ctx.stroke();
 // 時間線
 
 for(
-    let m=startMin;
-    m<=endMin;
+    let m=startMin + 30;
+    m<endMin;
     m+=30
 ){
 
