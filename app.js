@@ -552,8 +552,6 @@ data.week.forEach((day,index)=>{
 //統計計算
 
 function calculateStats(data){
-
-    console.log("week length =", data.week.length);
     
     let totalMinutes = 0;
 
@@ -580,40 +578,17 @@ function calculateStats(data){
                 (subjectMinutes[plan.subject] || 0)
                 + duration;
         });
-
-        console.log(
-            "index=",
-            index,
-            "date=",
-            day.date,
-            "dayTotal=",
-            dayTotal
-        );
         
         if(index >= 5){
 
-            console.log("→ weekend");
-            
             weekendMinutes += dayTotal;
         
         }else{
 
-            console.log("→ weekday");
-            
             weekdayMinutes += dayTotal;
         }
 
     });
-
-    console.log(
-        "weekdayMinutes=",
-        weekdayMinutes
-    );
-
-    console.log(
-        "weekendMinutes=",
-        weekendMinutes
-    );
     
     return {
         totalMinutes,
