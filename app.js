@@ -57,7 +57,17 @@ if(m === 0){
 
 return `${h}h${m}m`;
 
+}
 
+function formatMinutes(minutes){
+
+    const h =
+        Math.floor(minutes / 60);
+
+    const m =
+        minutes % 60;
+
+    return `${h}h${m}m`;
 }
 
 function timeToMinutes(timeStr){
@@ -93,6 +103,61 @@ function shouldShowTimeLabel(timeStr){
         Number(timeStr.split(":")[1]);
 
     return !(minutes === 0 || minutes === 30);
+}
+
+//統計計算
+
+function calculateStats(data){
+
+    let totalMinutes = 0;
+
+    const subjectMinutes = {};
+
+    let weekdayMinutes = 0;
+    let weekendMinutes = 0;
+
+    data.week.forEach(day=>{
+
+        let dayTotal = 0;
+
+        day.plans.forEach(plan=>{
+
+            const duration =
+                timeToMinutes(plan.end)
+                -
+                timeToMinutes(plan.start);
+
+            totalMinutes += duration;
+            dayTotal += duration;
+
+            subjectMinutes[plan.subject] =
+                (subjectMinutes[plan.subject] || 0)
+                + duration;
+        });
+
+        const d =
+            new Date(day.date);
+
+        const dayOfWeek =
+            d.getDay();
+
+        if(
+            dayOfWeek === 0 ||
+            dayOfWeek === 6
+        ){
+            weekendMinutes += dayTotal;
+        }else{
+            weekdayMinutes += dayTotal;
+        }
+
+    });
+
+    return {
+        totalMinutes,
+        subjectMinutes,
+        weekdayMinutes,
+        weekendMinutes
+    };
 }
 
 //JSON欠損チェック
@@ -539,4 +604,59 @@ data.week.forEach((day,index)=>{
 
 });
 
+function calculateStats(data){
+
+    let totalMinutes = 0;
+
+    const subjectMinutes = {};
+
+    let weekdayMinutes = 0;
+    let weekendMinutes = 0;
+
+    data.week.forEach(day=>{
+
+        let dayTotal = 0;
+
+        day.plans.forEach(plan=>{
+
+            const start = timeToMinutes(plan.start);
+            const end = timeToMinutes(plan.end);
+
+            const duration = end - start;
+
+            totalMinutes += duration;
+            dayTotal += duration;
+
+            subjectMinutes[plan.subject] =
+                (subjectMinutes[plan.subject] || 0)
+                + duration;
+        });
+
+        if(day.dayOfWeek === "土" || day.dayOfWeek === "日"){
+            weekendMinutes += dayTotal;
+        }else{
+            weekdayMinutes += dayTotal;
+        }
+    });
+
+    return {
+        totalMinutes,
+        subjectMinutes,
+        weekdayMinutes,
+        weekendMinutes
+    };
+}
+
+const stats =
+    calculateStats(data);
+
+console.log(stats);
+
+console.log(
+    "総勉強時間",
+    formatMinutes(
+        stats.totalMinutes
+    )
+);
+    
 }
