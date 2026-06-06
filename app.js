@@ -632,10 +632,10 @@ const analysisTop =
 //円グラフ
     
 const pieX = W * 0.12;
-const pieY = analysisTop + 100;
+const pieY = analysisTop + 135;
 
-const outerRadius = 80;
-const innerRadius = 45;
+const outerRadius = 110;
+const innerRadius = 65;
 
 let startAngle = -Math.PI / 2;
 
@@ -693,21 +693,32 @@ ctx.fillStyle = "#fff";
 ctx.fill();
     
 //真ん中に総勉強時間表示
+const totalHours =
+    Math.floor(
+        stats.totalMinutes / 60
+    );
+
+const totalMins =
+    stats.totalMinutes % 60;
+
 ctx.fillStyle = "#000";
 
 ctx.textAlign = "center";
 
 ctx.font =
-    "bold 18px sans-serif";
+    "bold 24px sans-serif";
 
 ctx.fillText(
-    formatMinutes(
-        stats.totalMinutes
-    ),
+    `${totalHours}h`,
     pieX,
-    pieY + 7
+    pieY - 10
 );
 
+ctx.fillText(
+    `${totalMins}m`,
+    pieX,
+    pieY + 22
+);
 /*  ただのテキスト（old）  
 ctx.fillStyle = "#000";
 
@@ -752,19 +763,19 @@ ctx.font =
 ctx.fillText(
     "一週間平均",
     W * 0.45,
-    analysisTop + 70
+    analysisTop + 110
 );
 
 ctx.fillText(
     "平日平均",
     W * 0.65,
-    analysisTop + 70
+    analysisTop + 110
 );
 
 ctx.fillText(
     "土日平均",
     W * 0.85,
-    analysisTop + 70
+    analysisTop + 110
 );
 
 ctx.font =
@@ -775,7 +786,7 @@ ctx.fillText(
         weekAverage
     ),
     W * 0.45,
-    analysisTop + 130
+    analysisTop + 175
 );
 
 ctx.fillText(
@@ -783,7 +794,7 @@ ctx.fillText(
         weekdayAverage
     ),
     W * 0.65,
-    analysisTop + 130
+    analysisTop + 175
 );
 
 ctx.fillText(
@@ -791,7 +802,106 @@ ctx.fillText(
         weekendAverage
     ),
     W * 0.85,
-    analysisTop + 130
+    analysisTop + 175
+);
+
+// =====================
+// AIメッセージ
+// =====================
+
+const messageX = W * 0.82;
+const messageY = analysisTop + 30;
+
+const messageWidth = 280;
+const messageHeight = 180;
+
+// 枠
+ctx.fillStyle = "#d9d9d9";
+
+ctx.fillRect(
+    messageX,
+    messageY,
+    messageWidth,
+    messageHeight
+);
+
+ctx.strokeStyle = "#888";
+
+ctx.strokeRect(
+    messageX,
+    messageY,
+    messageWidth,
+    messageHeight
+);
+
+
+ctx.textAlign = "left";
+
+ctx.font =
+    "18px sans-serif";
+
+ctx.fillStyle = "#333";
+
+//折り返し関数
+function drawWrappedText(
+    text,
+    x,
+    y,
+    maxWidth,
+    lineHeight
+){
+
+    const chars = text.split("");
+
+    let line = "";
+    let currentY = y;
+
+    chars.forEach(char=>{
+
+        const testLine =
+            line + char;
+
+        if(
+            ctx.measureText(
+                testLine
+            ).width
+            > maxWidth
+        ){
+
+            ctx.fillText(
+                line,
+                x,
+                currentY
+            );
+
+            line = char;
+
+            currentY +=
+                lineHeight;
+
+        }else{
+
+            line = testLine;
+        }
+
+    });
+
+    if(line){
+
+        ctx.fillText(
+            line,
+            x,
+            currentY
+        );
+    }
+}
+
+drawWrappedText(
+    data.message || "",
+    messageX + 20,
+    messageY + 40,
+    messageWidth - 40,
+    28
 );
     
 }
