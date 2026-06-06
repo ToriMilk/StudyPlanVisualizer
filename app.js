@@ -75,7 +75,7 @@ const rightCol = 70;
 const headerHeight = 60;
 
 const bodyHeight =
-    H - headerHeight - 20;
+    H - headerHeight;
 
 const rowHeight =
     bodyHeight / 7;
@@ -167,11 +167,12 @@ for(
 
         ctx.fillStyle="#000";
         ctx.textAlign="center";
+        ctx.textBaseline = "bottom";
 
         ctx.fillText(
             `${hh}:00`,
             x,
-            25
+            headerHeight - 8
         );
     }
 }
