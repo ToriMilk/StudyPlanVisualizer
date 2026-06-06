@@ -625,5 +625,93 @@ console.log(
         stats.totalMinutes
     )
 );
+
+const analysisTop =
+    headerHeight + bodyHeight;
+
+ctx.fillStyle = "#000";
+
+ctx.textAlign = "center";
+
+ctx.font = "bold 24px sans-serif";
+
+ctx.fillText(
+    "総勉強時間",
+    W * 0.20,
+    analysisTop + 70
+);
+
+ctx.font = "bold 42px sans-serif";
+
+ctx.fillText(
+    formatMinutes(
+        stats.totalMinutes
+    ),
+    W * 0.20,
+    analysisTop + 130
+);
+
+const weekdayAverage =
+    Math.round(
+        stats.weekdayMinutes / 5
+    );
+
+const weekendAverage =
+    Math.round(
+        stats.weekendMinutes / 2
+    );
+
+const weekAverage =
+    Math.round(
+        stats.totalMinutes / 7
+    );
+
+ctx.font =
+    "bold 22px sans-serif";
+
+ctx.fillText(
+    "一週間平均",
+    W * 0.45,
+    analysisTop + 70
+);
+
+ctx.fillText(
+    "平日平均",
+    W * 0.65,
+    analysisTop + 70
+);
+
+ctx.fillText(
+    "土日平均",
+    W * 0.85,
+    analysisTop + 70
+);
+
+ctx.font =
+    "bold 38px sans-serif";
+
+ctx.fillText(
+    formatMinutes(
+        weekAverage
+    ),
+    W * 0.45,
+    analysisTop + 130
+);
+
+ctx.fillText(
+    formatMinutes(
+        weekdayAverage
+    ),
+    W * 0.65,
+    analysisTop + 130
+);
+
+ctx.fillText(
+    formatMinutes(
+        weekendAverage
+    ),
+    W * 0.85,
+    analysisTop + 130
+);
     
 }
