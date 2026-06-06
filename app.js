@@ -281,7 +281,8 @@ data.week.forEach(
 // =====================
 // 勉強ブロック描画
 // =====================
-
+const ARROW_SIZE = 10;
+    
 data.week.forEach((day,index)=>{
 
     const rowTop =
@@ -317,28 +318,28 @@ data.week.forEach((day,index)=>{
         // 本体
 
         ctx.strokeStyle = color;
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 4;
         ctx.lineCap = "round";
 
         ctx.beginPath();
-        ctx.moveTo(x1 + 10, centerY);
-        ctx.lineTo(x2 - 10, centerY);
+        ctx.moveTo(x1 + arrowSize, centerY);
+        ctx.lineTo(x2 - arrowSize, centerY);
         ctx.stroke();
 
         // 左矢印
 
         ctx.beginPath();
-        ctx.moveTo(x1 + 12, centerY - 10);
+        ctx.moveTo(x1 + arrowSize, centerY - arrowSize);
         ctx.lineTo(x1, centerY);
-        ctx.lineTo(x1 + 12, centerY + 10);
+        ctx.lineTo(x1 + arrowSize, centerY + arrowSize);
         ctx.stroke();
 
         // 右矢印
 
         ctx.beginPath();
-        ctx.moveTo(x2 - 12, centerY - 10);
+        ctx.moveTo(x2 - arrowSize, centerY - arrowSize);
         ctx.lineTo(x2, centerY);
-        ctx.lineTo(x2 - 12, centerY + 10);
+        ctx.lineTo(x2 - arrowSize, centerY + arrowSize);
         ctx.stroke();
 
         // 教科名
