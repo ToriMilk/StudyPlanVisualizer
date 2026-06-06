@@ -358,12 +358,14 @@ data.week.forEach((day,index)=>{
         // 開始時刻
 
         if(shouldShowTimeLabel(plan.start)){
-
+            const startMinute =
+                plan.start.split(":")[1];
+            
             ctx.fillStyle = "#000";
-            ctx.font = "12px sans-serif";
-
+            ctx.font = "11px sans-serif";
+            
             ctx.fillText(
-                plan.start,
+                startMinute,
                 x1,
                 centerY + 18
             );
@@ -373,10 +375,14 @@ data.week.forEach((day,index)=>{
 
         if(shouldShowTimeLabel(plan.end)){
 
+            const endMinute =
+                plan.end.split(":")[1];
+            
             ctx.fillStyle = "#000";
-
+            ctx.font = "11px sans-serif";
+            
             ctx.fillText(
-                plan.end,
+                endMinute,
                 x2,
                 centerY + 18
             );
