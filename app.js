@@ -109,6 +109,8 @@ function shouldShowTimeLabel(timeStr){
 
 function calculateStats(data){
 
+    console.log("week length =", data.week.length);
+    
     let totalMinutes = 0;
 
     const subjectMinutes = {};
@@ -135,17 +137,40 @@ function calculateStats(data){
                 + duration;
         });
 
-        if(index >= 5){
+        console.log(
+            "index=",
+            index,
+            "date=",
+            day.date,
+            "dayTotal=",
+            dayTotal
+        );
         
+        if(index >= 5){
+
+            console.log("→ weekend");
+            
             weekendMinutes += dayTotal;
         
         }else{
-        
+
+            console.log("→ weekday");
+            
             weekdayMinutes += dayTotal;
         }
 
     });
 
+    console.log(
+        "weekdayMinutes=",
+        weekdayMinutes
+    );
+
+    console.log(
+        "weekendMinutes=",
+        weekendMinutes
+    );
+    
     return {
         totalMinutes,
         subjectMinutes,
