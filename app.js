@@ -704,6 +704,7 @@ const totalMins =
 ctx.fillStyle = "#000";
 
 ctx.textAlign = "center";
+ctx.textBaseline = "middle";
 
 ctx.font =
     "bold 24px sans-serif";
@@ -711,13 +712,13 @@ ctx.font =
 ctx.fillText(
     `${totalHours}h`,
     pieX,
-    pieY - 10
+    pieY - 18
 );
 
 ctx.fillText(
     `${totalMins}m`,
     pieX,
-    pieY + 22
+    pieY + 18
 );
 /*  ただのテキスト（old）  
 ctx.fillStyle = "#000";
@@ -757,24 +758,29 @@ const weekAverage =
         stats.totalMinutes / 7
     );
 
+//統計の表示位置
+const statX1 = W * 0.42;
+const statX2 = W * 0.60;
+const statX3 = W * 0.78;
+
 ctx.font =
     "bold 22px sans-serif";
 
 ctx.fillText(
     "一週間平均",
-    W * 0.45,
+    statX1,
     analysisTop + 110
 );
 
 ctx.fillText(
     "平日平均",
-    W * 0.65,
+    statX2,
     analysisTop + 110
 );
 
 ctx.fillText(
     "土日平均",
-    W * 0.85,
+    statX3,
     analysisTop + 110
 );
 
@@ -785,7 +791,7 @@ ctx.fillText(
     formatMinutes(
         weekAverage
     ),
-    W * 0.45,
+    statX1,
     analysisTop + 175
 );
 
@@ -793,7 +799,7 @@ ctx.fillText(
     formatMinutes(
         weekdayAverage
     ),
-    W * 0.65,
+    statX2,
     analysisTop + 175
 );
 
@@ -801,7 +807,7 @@ ctx.fillText(
     formatMinutes(
         weekendAverage
     ),
-    W * 0.85,
+    statX3,
     analysisTop + 175
 );
 
@@ -814,25 +820,6 @@ const messageY = analysisTop + 30;
 
 const messageWidth = 280;
 const messageHeight = 180;
-
-// 枠
-ctx.fillStyle = "#d9d9d9";
-
-ctx.fillRect(
-    messageX,
-    messageY,
-    messageWidth,
-    messageHeight
-);
-
-ctx.strokeStyle = "#888";
-
-ctx.strokeRect(
-    messageX,
-    messageY,
-    messageWidth,
-    messageHeight
-);
 
 
 ctx.textAlign = "left";
@@ -899,7 +886,7 @@ function drawWrappedText(
 drawWrappedText(
     data.message || "",
     messageX + 20,
-    messageY + 40,
+    messageY + 10,
     messageWidth - 40,
     28
 );
