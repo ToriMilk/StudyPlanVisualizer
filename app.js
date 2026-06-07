@@ -253,7 +253,7 @@ const analysisHeight = 300;
 const leftCol = 70;
 const rightCol = 70;
 
-const headerHeight = 60;
+const headerHeight = 30;
 
 const bodyHeight =
     H -
