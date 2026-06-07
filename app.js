@@ -383,12 +383,13 @@ ctx.setLineDash([]);
 
 // 合計
 
-ctx.textAlign="center";
+ctx.textAlign = "center";
+ctx.textBaseline = "bottom";
 
 ctx.fillText(
     "合計",
-    W-rightCol/2,
-    30
+    W - rightCol / 2,
+    headerHeight - 8
 );
 
 // 日付
@@ -631,7 +632,7 @@ const analysisTop =
 
 //円グラフ
     
-const pieX = W * 0.12;
+const pieX = W * 0.10;
 const pieY = analysisTop + 135;
 
 const outerRadius = 110;
@@ -838,9 +839,9 @@ const weekAverage =
     );
 
 //統計の表示位置
-const statX1 = W * 0.42;
-const statX2 = W * 0.60;
-const statX3 = W * 0.78;
+const statX1 = W * 0.40;
+const statX2 = W * 0.54;
+const statX3 = W * 0.68;
 
 ctx.font =
     "bold 22px sans-serif";
