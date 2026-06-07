@@ -639,10 +639,19 @@ const innerRadius = 65;
 
 let startAngle = -Math.PI / 2;
 
-Object.entries(
-    stats.subjectMinutes
-).forEach(([subject,minutes])=>{
+//多い順にソート
+const sortedSubjects =
+    Object.entries(
+        stats.subjectMinutes
+    )
+    .sort(
+        (a,b)=>
+        b[1] - a[1]
+    );
 
+sortedSubjects.forEach(
+    ([subject,minutes])=>{
+        
     const ratio =
         minutes /
         stats.totalMinutes;
@@ -720,6 +729,76 @@ ctx.fillText(
     pieX,
     pieY + 18
 );
+
+// =====================
+// 円グラフ凡例
+// =====================
+
+const legendX = pieX + 170;
+
+const legendLineHeight = 30;
+
+const legendStartY =
+    pieY
+    -
+    (
+        (sortedSubjects.length - 1)
+        *
+        legendLineHeight
+    )
+    / 2;
+
+ctx.textAlign = "left";
+ctx.textBaseline = "middle";
+
+ctx.font =
+    "16px sans-serif";
+
+sortedSubjects.forEach(
+    ([subject,minutes],i)=>{
+
+    const y =
+        legendStartY +
+        i *
+        legendLineHeight;
+
+    const percent =
+        Math.round(
+            minutes
+            /
+            stats.totalMinutes
+            *
+            100
+        );
+
+    // 色丸
+
+    ctx.beginPath();
+
+    ctx.arc(
+        legendX,
+        y,
+        7,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        SUBJECT_COLORS[subject];
+
+    ctx.fill();
+
+    // テキスト
+
+    ctx.fillStyle = "#000";
+
+    ctx.fillText(
+        `${subject} : ${percent}% (${formatMinutes(minutes)})`,
+        legendX + 18,
+        y
+    );
+
+});
 /*  ただのテキスト（old）  
 ctx.fillStyle = "#000";
 
