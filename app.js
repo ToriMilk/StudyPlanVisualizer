@@ -255,13 +255,11 @@ const rightCol = 70;
 
 const headerHeight = 30;
 
-const bodyHeight =
-    H -
-    headerHeight -
-    analysisHeight;
-
 const rowHeight =
-    bodyHeight / 7;
+    100;
+
+const bodyHeight =
+    rowHeight * 7;
 
 const timelineLeft = leftCol;
 const timelineRight = W - rightCol;
