@@ -967,13 +967,14 @@ drawWrappedText(
     messageY + 10,
     messageWidth - 40,
     28
-);
+)   
+}
 
 //GASに送信
 async function sendToSpreadsheet(data){
 
     const response = await fetch(
-        "url",
+        "https://script.google.com/macros/s/AKfycbyEzxm6RRLO3i1Y0MdYIw_z7oV4WkaEPJnvX2klfcEN0wWsB463fwITWEWs4SF_LwhV/exec",
         {
             method: "POST",
             headers:{
@@ -987,6 +988,4 @@ async function sendToSpreadsheet(data){
         throw new Error("送信失敗");
     }
 
-}
-    
 }
