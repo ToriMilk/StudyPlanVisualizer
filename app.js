@@ -1,9 +1,14 @@
+let currentData = null;
 const canvas = document.getElementById("timelineCanvas");
 const ctx = canvas.getContext("2d");
 
 document
 .getElementById("jsonFile")
 .addEventListener("change", loadJson);
+
+document
+.getElementById("downloadPdf")
+.addEventListener("click", downloadPDF);
 
 function loadJson(event){
 
@@ -31,8 +36,12 @@ reader.onload = function(e){
     
         return;
     }
-    
+
+    currentData = data;
+
     drawTable(data);
+    
+    document.getElementById("downloadPdf").disabled = false;
     
 };
 
@@ -987,5 +996,60 @@ async function sendToSpreadsheet(data){
     if(!response.ok){
         throw new Error("送信失敗");
     }
+
+}
+
+//PDFダウンロード処理
+async function downloadPDF(){
+
+    if(!currentData){
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF({
+
+        orientation:"landscape",
+
+        unit:"mm",
+
+        format:"a4"
+
+    });
+
+    const imgData =
+        canvas.toDataURL("image/png",1.0);
+
+    const pageWidth =
+        pdf.internal.pageSize.getWidth();
+
+    const pageHeight =
+        pdf.internal.pageSize.getHeight();
+
+    pdf.addImage(
+
+        imgData,
+
+        "PNG",
+
+        0,
+
+        0,
+
+        pageWidth,
+
+        pageHeight
+
+    );
+
+    const startDate =
+        currentData.week[0].date;
+
+    const fileName =
+        startDate.replaceAll("-","")
+        + "_study_plan.pdf";
+
+    pdf.save(fileName);
 
 }
