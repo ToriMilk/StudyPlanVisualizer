@@ -1006,29 +1006,20 @@ async function downloadPDF(){
         return;
     }
 
-    // 元サイズ保存
-    const oldWidth = canvas.width;
-    const oldHeight = canvas.height;
-
-    // PDF用高画質サイズ（A4横300dpi）
-    canvas.width = 3508;
-    canvas.height = 2480;
-
-    // 高解像度で再描画
-    drawTable(currentData);
-
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF({
 
-        orientation: "landscape",
-        unit: "mm",
-        format: "a4"
+        orientation:"landscape",
+
+        unit:"mm",
+
+        format:"a4"
 
     });
 
     const imgData =
-        canvas.toDataURL("image/png", 1.0);
+        canvas.toDataURL("image/png",1.0);
 
     const pageWidth =
         pdf.internal.pageSize.getWidth();
@@ -1056,15 +1047,9 @@ async function downloadPDF(){
         currentData.week[0].date;
 
     const fileName =
-        startDate.replaceAll("-", "")
+        startDate.replaceAll("-","")
         + "_study_plan.pdf";
 
     pdf.save(fileName);
-
-    // 元サイズへ戻す
-    canvas.width = oldWidth;
-    canvas.height = oldHeight;
-
-    drawTable(currentData);
 
 }
