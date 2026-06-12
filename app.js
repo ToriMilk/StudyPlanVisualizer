@@ -1044,11 +1044,26 @@ async function downloadPDF(){
     const startDate =
         currentData.week[0].date;
 
-    pdf.save(
-        startDate.replaceAll("-","")
-        + "_study_plan.pdf"
-    );
-
+    try{
+    
+        //Googleスプレッドシートへ保存
+        await sendToSpreadsheet(currentData);
+    
+        //PDF保存
+        pdf.save(
+            startDate.replaceAll("-","")
+            + "_study_plan.pdf"
+        );
+    
+        console.log("スプレッドシートへ保存しました");
+    
+    }catch(error){
+    
+        console.error(error);
+        alert("Googleスプレッドシートへの保存に失敗しました。PDFは保存されませんでした。");
+    
+    }
+    
     // 元へ戻す
     canvas.width = oldWidth;
     canvas.height = oldHeight;
