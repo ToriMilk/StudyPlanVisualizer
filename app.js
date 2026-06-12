@@ -245,7 +245,11 @@ ${plans[i+1].subject}`
     return errors;
 }
 
-function drawTable(data){
+function drawTable(data, scale = 1){
+
+ctx.save();
+
+ctx.setTransform(scale,0,0,scale,0,0);
 
 ctx.clearRect(
     0,
@@ -254,10 +258,7 @@ ctx.clearRect(
     canvas.height
 );
 
-const W = canvas.width;
-const H = canvas.height;
-
-const analysisHeight = 300;
+const W = canvas.width / scale;
 
 const leftCol = 70;
 const rightCol = 70;
@@ -976,7 +977,9 @@ drawWrappedText(
     messageY + 10,
     messageWidth - 40,
     28
-)   
+);
+
+ctx.restore();
 }
 
 //GASに送信
@@ -1002,54 +1005,56 @@ async function sendToSpreadsheet(data){
 //PDFダウンロード処理
 async function downloadPDF(){
 
-    if(!currentData){
-        return;
-    }
+    if(!currentData) return;
+
+    const oldWidth = canvas.width;
+    const oldHeight = canvas.height;
+
+    const oldStyleWidth = canvas.style.width;
+    const oldStyleHeight = canvas.style.height;
+
+    // A4横300dpi
+    canvas.width = 3508;
+    canvas.height = 2480;
+
+    canvas.style.width = oldWidth + "px";
+    canvas.style.height = oldHeight + "px";
+
+    const scale = canvas.width / oldWidth;
+
+    drawTable(currentData, scale);
 
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF({
-
         orientation:"landscape",
-
         unit:"mm",
-
         format:"a4"
-
     });
 
-    const imgData =
-        canvas.toDataURL("image/png",1.0);
-
-    const pageWidth =
-        pdf.internal.pageSize.getWidth();
-
-    const pageHeight =
-        pdf.internal.pageSize.getHeight();
-
     pdf.addImage(
-
-        imgData,
-
+        canvas.toDataURL("image/png",1),
         "PNG",
-
         0,
-
         0,
-
-        pageWidth,
-
-        pageHeight
-
+        297,
+        210
     );
 
     const startDate =
         currentData.week[0].date;
 
-    const fileName =
+    pdf.save(
         startDate.replaceAll("-","")
-        + "_study_plan.pdf";
+        + "_study_plan.pdf"
+    );
 
-    pdf.save(fileName);
-
+    // 元へ戻す
+    canvas.width = oldWidth;
+    canvas.height = oldHeight;
+    
+    canvas.style.width = oldStyleWidth;
+    canvas.style.height = oldStyleHeight;
+    
+    drawTable(currentData);
 }
