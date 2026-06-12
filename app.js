@@ -968,5 +968,25 @@ drawWrappedText(
     messageWidth - 40,
     28
 );
+
+//GASに送信
+async function sendToSpreadsheet(data){
+
+    const response = await fetch(
+        "url",
+        {
+            method: "POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(data)
+        }
+    );
+
+    if(!response.ok){
+        throw new Error("送信失敗");
+    }
+
+}
     
 }
