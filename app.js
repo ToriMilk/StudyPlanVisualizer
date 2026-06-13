@@ -777,7 +777,9 @@ ctx.fillText(
     legendX + 250,
     legendStartY - 25
 );
-    
+
+ctx.font = "16px sans-serif";
+
 sortedSubjects.forEach(
     ([subject,minutes],i)=>{
 
@@ -912,7 +914,7 @@ ctx.fillText(
     analysisTop + 110
 );
 
-ctx.fillStyle = "#2e7d32";
+ctx.fillStyle = "#000";
 ctx.font =
     "bold 38px sans-serif";
 
