@@ -996,9 +996,13 @@ async function sendToSpreadsheet(data){
         }
     );
 
+    const text = await response.text();
+    
     if(!response.ok){
-        throw new Error("送信失敗");
+        throw new Error(text);
     }
+    
+    console.log(text);
 
 }
 
