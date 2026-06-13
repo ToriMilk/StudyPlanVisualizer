@@ -767,6 +767,17 @@ ctx.textBaseline = "middle";
 ctx.font =
     "16px sans-serif";
 
+//前週比較タイトル
+ctx.fillStyle="#000";
+ctx.font="bold 18px sans-serif";
+ctx.textAlign="left";
+
+ctx.fillText(
+    "前週比較",
+    legendX + 250,
+    legendStartY - 25
+);
+    
 sortedSubjects.forEach(
     ([subject,minutes],i)=>{
 
@@ -808,6 +819,29 @@ sortedSubjects.forEach(
     ctx.fillText(
         `${subject} : ${percent}% (${formatMinutes(minutes)})`,
         legendX + 18,
+        y
+    );
+
+    //前週比較科目別
+    const previous =
+        previousStats[subject] || 0;
+    
+    const diff =
+        minutes - previous;
+    
+    const sign =
+        diff >= 0 ? "+" : "";
+    
+    ctx.font="16px sans-serif";
+    
+    ctx.fillStyle =
+        diff>=0
+        ? "#2e7d32"
+        : "#c62828";
+    
+    ctx.fillText(
+        `${sign}${formatMinutes(diff)}`,
+        legendX + 250,
         y
     );
 
@@ -907,10 +941,10 @@ ctx.fillText(
 // AIメッセージ
 // =====================
 
-const messageX = W * 0.82;
-const messageY = analysisTop + 30;
+const messageX = W * 0.05;
+const messageY = analysisTop + 250;
 
-const messageWidth = 280;
+const messageWidth = W * 0.73;
 const messageHeight = 180;
 
 
@@ -982,55 +1016,6 @@ drawWrappedText(
     messageWidth - 40,
     28
 );
-
-//全週比較
-ctx.fillStyle = "#000";
-ctx.font = "bold 18px sans-serif";
-
-ctx.fillText(
-    "前週比較",
-    W * 0.78,
-    analysisTop + 230
-);
-
-const currentSubjects =
-    stats.subjectMinutes;
-
-let compareY =
-    analysisTop + 260;
-
-ctx.font =
-    "16px sans-serif";
-
-Object.keys(currentSubjects)
-.forEach(subject=>{
-
-    const current =
-        currentSubjects[subject];
-
-    const previous =
-        previousStats[subject] || 0;
-
-    const diff =
-        current - previous;
-
-    const sign =
-        diff >= 0 ? "+" : "";
-
-    ctx.fillStyle =
-        diff >= 0
-        ? "#2e7d32"
-        : "#c62828";
-
-    ctx.fillText(
-        `${subject} ${sign}${formatMinutes(diff)}`,
-        W * 0.78,
-        compareY
-    );
-
-    compareY += 24;
-
-});
     
 ctx.restore();
 }
