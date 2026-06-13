@@ -70,13 +70,14 @@ return `${h}h${m}m`;
 
 function formatMinutes(minutes){
 
-    const h =
-        Math.floor(minutes / 60);
+    const sign = minutes < 0 ? "-" : "";
 
-    const m =
-        minutes % 60;
+    minutes = Math.abs(minutes);
 
-    return `${h}h${m}m`;
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+
+    return `${sign}${h}h${m}m`;
 }
 
 function timeToMinutes(timeStr){
