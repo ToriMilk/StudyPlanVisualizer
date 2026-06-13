@@ -889,6 +889,8 @@ const statX1 = W * 0.40;
 const statX2 = W * 0.54;
 const statX3 = W * 0.68;
 
+ctx.fillStyle = "#000";
+
 ctx.font =
     "bold 22px sans-serif";
 
@@ -910,6 +912,7 @@ ctx.fillText(
     analysisTop + 110
 );
 
+ctx.fillStyle = "#2e7d32";
 ctx.font =
     "bold 38px sans-serif";
 
