@@ -245,7 +245,11 @@ ${plans[i+1].subject}`
     return errors;
 }
 
-function drawTable(data, scale = 1){
+function drawTable(
+    data,
+    scale = 1,
+    previousStats = {}
+){
 
 ctx.save();
 
@@ -979,6 +983,55 @@ drawWrappedText(
     28
 );
 
+//全週比較
+ctx.fillStyle = "#000";
+ctx.font = "bold 18px sans-serif";
+
+ctx.fillText(
+    "前週比較",
+    W * 0.78,
+    analysisTop + 230
+);
+
+const currentSubjects =
+    stats.subjectMinutes;
+
+let compareY =
+    analysisTop + 260;
+
+ctx.font =
+    "16px sans-serif";
+
+Object.keys(currentSubjects)
+.forEach(subject=>{
+
+    const current =
+        currentSubjects[subject];
+
+    const previous =
+        previousStats[subject] || 0;
+
+    const diff =
+        current - previous;
+
+    const sign =
+        diff >= 0 ? "+" : "";
+
+    ctx.fillStyle =
+        diff >= 0
+        ? "#2e7d32"
+        : "#c62828";
+
+    ctx.fillText(
+        `${subject} ${sign}${formatMinutes(diff)}`,
+        W * 0.78,
+        compareY
+    );
+
+    compareY += 24;
+
+});
+    
 ctx.restore();
 }
 
@@ -996,8 +1049,25 @@ async function sendToSpreadsheet(data){
 
 }
 
+//GASで過去データ集計
+async function getHistoryData(){
+
+    const response =
+        await fetch(
+            "https://script.google.com/macros/s/AKfycbyEzxm6RRLO3i1Y0MdYIw_z7oV4WkaEPJnvX2klfcEN0wWsB463fwITWEWs4SF_LwhV/exec"
+        );
+
+    return await response.json();
+
+}
+
 //PDFダウンロード処理
 async function downloadPDF(){
+
+    const previousStats =
+    await getPreviousWeekStats(
+        currentData
+    );
 
     if(!currentData) return;
 
@@ -1016,7 +1086,11 @@ async function downloadPDF(){
 
     const scale = canvas.width / oldWidth;
 
-    drawTable(currentData, scale);
+    drawTable(
+        currentData,
+        scale,
+        previousStats
+    );
 
     const { jsPDF } = window.jspdf;
 
@@ -1065,5 +1139,71 @@ async function downloadPDF(){
     canvas.style.width = oldStyleWidth;
     canvas.style.height = oldStyleHeight;
     
-    drawTable(currentData);
+    drawTable(
+        currentData,
+        1,
+        previousStats
+    );
+}
+
+//全週集計
+function calculateSubjectTotals(records){
+
+    const totals = {};
+
+    records.forEach(r=>{
+
+        totals[r.subject] =
+            (totals[r.subject] || 0)
+            +
+            Number(r.minutes);
+
+    });
+
+    return totals;
+
+}
+
+//前週データ取得
+async function getPreviousWeekStats(currentData){
+
+    const history =
+        await getHistoryData();
+
+    const currentStart =
+        new Date(
+            currentData.week[0].date
+        );
+
+    const previousStart =
+        new Date(currentStart);
+
+    previousStart.setDate(
+        previousStart.getDate() - 7
+    );
+
+    const previousEnd =
+        new Date(currentStart);
+
+    previousEnd.setDate(
+        previousEnd.getDate() - 1
+    );
+
+    const previousRecords =
+        history.filter(r=>{
+
+            const d =
+                new Date(r.date);
+
+            return (
+                d >= previousStart &&
+                d <= previousEnd
+            );
+
+        });
+
+    return calculateSubjectTotals(
+        previousRecords
+    );
+
 }
