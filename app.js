@@ -985,24 +985,14 @@ ctx.restore();
 //GASに送信
 async function sendToSpreadsheet(data){
 
-    const response = await fetch(
+    await fetch(
         "https://script.google.com/macros/s/AKfycbyEzxm6RRLO3i1Y0MdYIw_z7oV4WkaEPJnvX2klfcEN0wWsB463fwITWEWs4SF_LwhV/exec",
         {
             method: "POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
+            mode: "no-cors",
             body: JSON.stringify(data)
         }
     );
-
-    const text = await response.text();
-    
-    if(!response.ok){
-        throw new Error(text);
-    }
-    
-    console.log(text);
 
 }
 
